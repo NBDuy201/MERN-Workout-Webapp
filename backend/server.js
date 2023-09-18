@@ -1,5 +1,6 @@
 import express from "express";
 import "dotenv/config";
+import mongoose from "mongoose";
 
 // Routes files
 import workoutRoutes from "./routes/workout.js";
@@ -9,6 +10,8 @@ import { ROUTES } from "./common/constants.js";
 const app = express();
 
 // Middleware
+app.use(express.json());
+
 app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
@@ -21,7 +24,17 @@ app.get("/", (req, res) => {
 
 app.use(ROUTES.WORKOUT, workoutRoutes);
 
-// Listen to request
-app.listen(process.env.PORT, () => {
-  console.log(`Listening on http://localhost:${process.env.PORT}`);
-});
+// Connect to MongoDb
+(async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    // Listen to request
+    app.listen(process.env.PORT, () => {
+      console.log(
+        `Connected to db & listening on http://localhost:${process.env.PORT}`
+      );
+    });
+  } catch (error) {
+    console.log("MongoDb connection error:", error);
+  }
+})();
