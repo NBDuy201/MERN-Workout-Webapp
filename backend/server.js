@@ -1,6 +1,10 @@
 import express from "express";
 import "dotenv/config";
 
+// Routes files
+import workoutRoutes from "./routes/workout.js";
+import { ROUTES } from "./common/constants.js";
+
 // Express app
 const app = express();
 
@@ -14,6 +18,8 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
   res.json({ mssg: "Welcom to the app" });
 });
+
+app.use(ROUTES.WORKOUT, workoutRoutes);
 
 // Listen to request
 app.listen(process.env.PORT, () => {
