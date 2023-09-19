@@ -18,6 +18,7 @@ export async function getAllWorkouts(req, res) {
 export async function getSingleWorkout(req, res) {
   const { id } = req.params;
 
+  // Check valid id
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res
       .status(RESP_CODE.NOT_FOUND)
@@ -47,6 +48,59 @@ export async function createWorkout(req, res) {
     res.status(RESP_CODE.SUCCESS).json(workout);
   } catch (error) {
     console.log("Create workout err: ", error);
+    res.status(RESP_CODE.ERROR).json({ error: error.message });
+  }
+}
+
+// Get single workout
+export async function deleteWorkout(req, res) {
+  const { id } = req.params;
+
+  // Check valid id
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res
+      .status(RESP_CODE.NOT_FOUND)
+      .json({ error: WORKOUT_ERR_MSG.NOT_FOUND });
+  }
+
+  try {
+    const workout = await WorkoutModel.findByIdAndDelete(id);
+    if (!workout) {
+      return res
+        .status(RESP_CODE.NOT_FOUND)
+        .json({ error: WORKOUT_ERR_MSG.NOT_FOUND });
+    }
+    res.status(RESP_CODE.SUCCESS).json(workout);
+  } catch (error) {
+    console.log("Delete single workout err: ", error);
+    res.status(RESP_CODE.ERROR).json({ error: error.message });
+  }
+}
+
+// Update single workout
+export async function updateWorkout(req, res) {
+  const { id } = req.params;
+
+  // Check valid id
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res
+      .status(RESP_CODE.NOT_FOUND)
+      .json({ error: WORKOUT_ERR_MSG.NOT_FOUND });
+  }
+
+  try {
+    const workout = await WorkoutModel.findByIdAndUpdate(
+      { _id: id },
+      { ...req.body }
+    );
+    if (!workout) {
+      return res
+        .status(RESP_CODE.NOT_FOUND)
+        .json({ error: WORKOUT_ERR_MSG.NOT_FOUND });
+    }
+    res.status(RESP_CODE.SUCCESS).json(workout);
+  } catch (error) {
+    console.log("Updae single workout err: ", error);
     res.status(RESP_CODE.ERROR).json({ error: error.message });
   }
 }
