@@ -7,10 +7,14 @@ import { WORKOUT_ERR_MSG } from "../common/errMsg.js";
 export async function getAllWorkouts(req, res) {
   try {
     const workouts = await WorkoutModel.find({})?.sort({ createdAt: -1 }); // Descended order
-    res.status(RESP_CODE.SUCCESS).json(workouts);
+    res
+      .status(RESP_CODE.SUCCESS)
+      .json({ status: RESP_CODE.SUCCESS, data: workouts });
   } catch (error) {
     console.log("Get all workout err: ", error);
-    res.status(RESP_CODE.ERROR).json({ error: error.message });
+    res
+      .status(RESP_CODE.ERROR)
+      .json({ status: RESP_CODE.ERROR, error: error.message });
   }
 }
 
@@ -45,10 +49,14 @@ export async function createWorkout(req, res) {
 
   try {
     const workout = await WorkoutModel.create({ title, load, reps });
-    res.status(RESP_CODE.SUCCESS).json(workout);
+    res
+      .status(RESP_CODE.SUCCESS)
+      .json({ status: RESP_CODE.SUCCESS, data: workout });
   } catch (error) {
     console.log("Create workout err: ", error);
-    res.status(RESP_CODE.ERROR).json({ error: error.message });
+    res
+      .status(RESP_CODE.ERROR)
+      .json({ status: RESP_CODE.ERROR, error: error.message });
   }
 }
 

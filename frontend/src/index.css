@@ -15,7 +15,10 @@
     @apply text-2xl;
   }
   h3 {
-    @apply text-xl;
+    @apply font-semibold text-xl;
+  }
+  label {
+    @apply text-sm;
   }
 }
 
