@@ -47,6 +47,25 @@ export async function getSingleWorkout(req, res) {
 export async function createWorkout(req, res) {
   const { title, load, reps } = req.body;
 
+  // Check empty
+  let emptyFields = [];
+  if (!title) {
+    emptyFields.push("title");
+  }
+  if (!load) {
+    emptyFields.push("load");
+  }
+  if (!reps) {
+    emptyFields.push("reps");
+  }
+  if (emptyFields.length > 0) {
+    return res.status(RESP_CODE.ERROR).json({
+      status: RESP_CODE.ERROR,
+      emptyFields,
+      error: "Please fill in all the fields",
+    });
+  }
+
   try {
     const workout = await WorkoutModel.create({ title, load, reps });
     res
@@ -60,7 +79,7 @@ export async function createWorkout(req, res) {
   }
 }
 
-// Get single workout
+// Delete single workout
 export async function deleteWorkout(req, res) {
   const { id } = req.params;
 
@@ -74,14 +93,19 @@ export async function deleteWorkout(req, res) {
   try {
     const workout = await WorkoutModel.findByIdAndDelete(id);
     if (!workout) {
-      return res
-        .status(RESP_CODE.NOT_FOUND)
-        .json({ error: WORKOUT_ERR_MSG.NOT_FOUND });
+      return res.status(RESP_CODE.NOT_FOUND).json({
+        status: RESP_CODE.NOT_FOUND,
+        error: WORKOUT_ERR_MSG.NOT_FOUND,
+      });
     }
-    res.status(RESP_CODE.SUCCESS).json(workout);
+    res
+      .status(RESP_CODE.SUCCESS)
+      .json({ status: RESP_CODE.SUCCESS, data: workout });
   } catch (error) {
     console.log("Delete single workout err: ", error);
-    res.status(RESP_CODE.ERROR).json({ error: error.message });
+    res
+      .status(RESP_CODE.ERROR)
+      .json({ status: RESP_CODE.ERROR, error: error.message });
   }
 }
 

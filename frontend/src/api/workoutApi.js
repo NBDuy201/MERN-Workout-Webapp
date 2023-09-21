@@ -1,5 +1,5 @@
 import { API_PATH } from "~/config/apiPath";
-import { handleGet, handlePost } from "~/utils/fetch";
+import { handleDelete, handleGet, handlePost } from "~/utils/fetch";
 
 export const workoutApi = {
   getWorkouts: async () => {
@@ -18,6 +18,17 @@ export const workoutApi = {
     } catch (error) {
       console.log(
         "🚀 ~ file: workoutApi.js:18 ~ createWorkout: ~ error:",
+        error
+      );
+    }
+  },
+  deleteWorkout: async (workoutId) => {
+    try {
+      const res = await handleDelete(API_PATH.WORKOUTS_BASE, workoutId);
+      return res;
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: workoutApi.js:31 ~ deleteWorkout: ~ error:",
         error
       );
     }

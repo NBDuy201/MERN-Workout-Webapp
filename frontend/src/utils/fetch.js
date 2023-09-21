@@ -28,9 +28,9 @@ export const handlePatch = async (api, data) => {
   }
 };
 
-export const handleDelete = async (api, data) => {
+export const handleDelete = async (api, id) => {
   try {
-    const resp = await axios.delete(api, { data });
+    const resp = await axios.delete(`${api}/${id}`);
     return resp.data;
   } catch (error) {
     console.log(error);

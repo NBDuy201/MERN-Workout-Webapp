@@ -5,17 +5,16 @@ import WorkoutForm from "~/components/WorkoutForm";
 import { reactQueryKey } from "~/utils/fetch";
 
 const Home = () => {
-  const {
-    data: workouts,
-    isLoading,
-    error,
-  } = useQuery(reactQueryKey.WORKOUT_LIST(), () => workoutApi.getWorkouts());
+  const { data: workouts, isFetching } = useQuery(
+    reactQueryKey.WORKOUT_LIST(),
+    () => workoutApi.getWorkouts()
+  );
   console.log("🚀 ~ file: Home.jsx:8 ~ Home ~ workouts:", workouts);
 
   return (
     <div className="page-container my-4 flex gap-x-4">
       <div className="workout-list w-3/4 flex flex-col gap-y-4">
-        {isLoading
+        {isFetching
           ? "Loading..."
           : workouts?.data?.map((item) => (
               <WorkoutDetails key={item._id} workout={item} />
