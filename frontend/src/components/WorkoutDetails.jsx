@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import React from "react";
 import { formatDistanceToNow } from "date-fns";
 import { FaTrash } from "react-icons/fa";
 import { useQueryClient } from "react-query";
@@ -6,7 +7,7 @@ import { workoutApi } from "~/api/workoutApi";
 import { RESP_CODE } from "~/config/respCode";
 import { reactQueryKey } from "~/utils/fetch";
 
-const WorkoutDetails = ({ workout }) => {
+const ForwardRefWorkoutDetails = ({ workout, ...props }, ref) => {
   const queryClient = useQueryClient();
 
   async function delteWorkout() {
@@ -31,7 +32,11 @@ const WorkoutDetails = ({ workout }) => {
   }
 
   return (
-    <div className="workout-details bg-white p-4 rounded-md shadow-md relative">
+    <div
+      className="workout-details bg-white p-4 rounded-md shadow-md relative"
+      ref={ref}
+      {...props}
+    >
       <button
         onClick={delteWorkout}
         className="absolute top-4 right-4 text-red-500 hover:opacity-70"
@@ -53,5 +58,7 @@ const WorkoutDetails = ({ workout }) => {
     </div>
   );
 };
+
+const WorkoutDetails = React.forwardRef(ForwardRefWorkoutDetails);
 
 export default WorkoutDetails;
