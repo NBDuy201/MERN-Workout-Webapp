@@ -5,6 +5,7 @@ import {
   getSingleWorkout,
   deleteWorkout,
   updateWorkout,
+  updateWorkoutOrder,
 } from "../controllers/workoutController.js";
 
 const router = express.Router();
@@ -23,5 +24,8 @@ router.delete("/:id", deleteWorkout);
 
 // Update single workout
 router.patch("/:id", updateWorkout);
+
+// Update workouts order
+router.post("/workout-order", updateWorkoutOrder);
 
 export default router;

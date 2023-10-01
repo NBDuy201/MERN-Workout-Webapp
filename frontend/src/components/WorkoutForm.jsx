@@ -72,7 +72,7 @@ const WorkoutForm = () => {
           name={formFields.TITLE}
           value={formData.title}
           onChange={(e) => handleChangeField(e.target.value, formFields.TITLE)}
-          isErr={emptyFields.includes(formFields.TITLE)}
+          isErr={emptyFields?.includes(formFields.TITLE)}
         />
         <InputField
           label="Load (kg)"
@@ -80,7 +80,7 @@ const WorkoutForm = () => {
           name={formFields.LOAD}
           value={formData.load}
           onChange={(e) => handleChangeField(e.target.value, formFields.LOAD)}
-          isErr={emptyFields.includes(formFields.LOAD)}
+          isErr={emptyFields?.includes(formFields.LOAD)}
         />
         <InputField
           label="Reps"
@@ -88,7 +88,7 @@ const WorkoutForm = () => {
           name={formFields.REPS}
           value={formData.reps}
           onChange={(e) => handleChangeField(e.target.value, formFields.REPS)}
-          isErr={emptyFields.includes(formFields.REPS)}
+          isErr={emptyFields?.includes(formFields.REPS)}
         />
 
         <button

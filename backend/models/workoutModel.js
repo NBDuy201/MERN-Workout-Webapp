@@ -17,7 +17,7 @@ const workoutSchema = new Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection: "workouts" }
 );
 
 export default mongoose.model("Workout", workoutSchema);

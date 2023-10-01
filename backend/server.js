@@ -27,7 +27,9 @@ app.use(ROUTES.WORKOUT, workoutRoutes);
 // Connect to MongoDb
 (async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(process.env.MONGO_URI, {
+      dbName: "workouts-mern-app",
+    });
     // Listen to request
     app.listen(process.env.PORT, () => {
       console.log(

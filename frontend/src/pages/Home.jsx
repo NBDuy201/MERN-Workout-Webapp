@@ -1,13 +1,15 @@
 import React from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { workoutApi } from "~/api/workoutApi";
 import WorkoutDetails from "~/components/WorkoutDetails";
 import WorkoutForm from "~/components/WorkoutForm";
-import { reactQueryKey } from "~/utils/fetch";
+import { reactQueryKey, sleep } from "~/utils/fetch";
 
 const Home = () => {
   const [sortedData, setSortedData] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+  console.log("🚀 ~ file: Home.jsx:11 ~ Home ~ sortedData:", sortedData);
   const { data: workouts, isFetching } = useQuery({
     queryKey: reactQueryKey.WORKOUT_LIST(),
     queryFn: () => workoutApi.getWorkouts(),
@@ -19,8 +21,18 @@ const Home = () => {
   });
   // console.log("🚀 ~ file: Home.jsx:8 ~ Home ~ workouts:", workouts);
 
+  const queryClient = useQueryClient();
+
+  function moveItem(arr = [], from = 0, to = 0) {
+    let res = [...arr];
+    let fromItem = res.splice(from, 1)[0]; // remove 'from' item + store it
+    res.splice(to, 0, fromItem); // insert stored 'from' item
+
+    return res;
+  }
+
   function handleDragDrop(results) {
-    console.log("🚀 ~ file: Home.jsx:16 ~ Home ~ results:", results);
+    // console.log("🚀 ~ file: Home.jsx:16 ~ Home ~ results:", results);
     const { destination, source, type } = results;
 
     if (
@@ -30,26 +42,38 @@ const Home = () => {
       return;
     }
 
-    let swappedWorkouts = [...sortedData];
-    [swappedWorkouts[source.index], swappedWorkouts[destination.index]] = [
-      swappedWorkouts[destination.index],
-      swappedWorkouts[source.index],
-    ];
-    setSortedData(
-      swappedWorkouts?.map((item, index) => ({
-        ...item,
-        index: index,
-      })) ?? []
-    );
+    // Move item
+    let movedWorkouts = moveItem(sortedData, source.index, destination.index);
+    setSortedData(movedWorkouts);
   }
 
-  const disableSave = true;
+  async function handleSaveOrder() {
+    try {
+      const reqData = sortedData.map((item) => item._id);
+      console.log("🚀 ~ file: Home.jsx:100 ~ reqData ~ reqData:", reqData);
+      await workoutApi.updateWorkoutOrder(reqData);
+      queryClient.invalidateQueries({ queryKey: reactQueryKey.WORKOUT_LIST() });
+    } catch (error) {
+      console.log("🚀 ~ file: Home.jsx:96 ~ handleDragDrop ~ error:", error);
+    }
+  }
+
+  async function handleResetOrder() {
+    setIsLoading(true);
+    await sleep(500);
+    setSortedData(workouts);
+    setIsLoading(false);
+  }
+
+  const disableSave = React.useMemo(() => {
+    return isSameArray() ? true : false;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortedData, workouts?.length]);
 
   function isSameArray() {
     if (!workouts || (sortedData?.length === 0 && workouts?.length === 0)) {
       return true;
     }
-
     return JSON.stringify(sortedData) === JSON.stringify(workouts);
   }
 
@@ -64,7 +88,7 @@ const Home = () => {
                 ref={provided.innerRef}
                 className="flex flex-col gap-y-4"
               >
-                {isFetching
+                {isFetching || isLoading
                   ? "Loading..."
                   : sortedData?.map((item, index) => (
                       <Draggable
@@ -87,14 +111,24 @@ const Home = () => {
             )}
           </Droppable>
         </DragDropContext>
-        <div className="sticky bottom-0 bg-white p-2 rounded-md">
+        <div className="sticky bottom-0 bg-white p-2 rounded-md flex gap-x-4">
           <button
-            className={`bg-green-500 text-white p-2 rounded-md ${
-              isSameArray() ? "bg-slate-300" : ""
+            className={`text-white p-2 rounded-md ${
+              disableSave ? "bg-slate-300" : "bg-green-500"
             }`}
-            disabled={isSameArray() ? disableSave : true}
+            onClick={handleSaveOrder}
+            disabled={disableSave}
           >
-            Save Workout Order
+            Save Order
+          </button>
+          <button
+            className={`text-white p-2 rounded-md ${
+              disableSave ? "bg-slate-300" : "bg-blue-500"
+            }`}
+            onClick={handleResetOrder}
+            disabled={disableSave}
+          >
+            Reset Order
           </button>
         </div>
       </div>

@@ -42,3 +42,5 @@ export const reactQueryKey = {
   WORKOUT_LIST: (workoutId) =>
     workoutId ? ["workoutList", workoutId] : ["workoutList"],
 };
+
+export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

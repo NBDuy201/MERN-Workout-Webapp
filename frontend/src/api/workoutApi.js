@@ -33,4 +33,17 @@ export const workoutApi = {
       );
     }
   },
+  updateWorkoutOrder: async (workoutsOrder = []) => {
+    try {
+      const res = await handlePost(API_PATH.WORKOUTS_ORDER, {
+        workoutsOrder,
+      });
+      return res;
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: workoutApi.js:46 ~ updateWorkoutOrder: ~ error:",
+        error
+      );
+    }
+  },
 };
