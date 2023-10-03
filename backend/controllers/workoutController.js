@@ -1,4 +1,4 @@
-import WorkoutModel from "../models/WorkoutModel.js";
+import WorkoutModel from "../models/workoutModel.js";
 import WorkoutOrderModel from "../models/workoutOrderModel.js";
 import { RESP_CODE } from "../common/respCode.js";
 import mongoose from "mongoose";
