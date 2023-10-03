@@ -1,6 +1,7 @@
 import express from "express";
 import "dotenv/config";
 import mongoose from "mongoose";
+import cors from "cors";
 
 // Routes files
 import workoutRoutes from "./routes/workout.js";
@@ -11,6 +12,14 @@ const app = express();
 
 // Middleware
 app.use(express.json());
+app.use(
+  cors({
+    origin: [
+      `http://localhost:${process.env.VITE_APP_FRONTEND_PORT}`,
+      `${process.env.VITE_APP_PRODUCTION_DOMAIN}`,
+    ],
+  })
+);
 
 app.use((req, res, next) => {
   console.log(req.path, req.method);
@@ -31,9 +40,9 @@ app.use(ROUTES.WORKOUT, workoutRoutes);
       dbName: "workouts-mern-app",
     });
     // Listen to request
-    app.listen(process.env.PORT, () => {
+    app.listen(process.env.VITE_APP_BACKEND_PORT, () => {
       console.log(
-        `Connected to db & listening on http://localhost:${process.env.PORT}`
+        `Connected to db & listening on http://localhost:${process.env.VITE_APP_BACKEND_PORT}`
       );
     });
   } catch (error) {

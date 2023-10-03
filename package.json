@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "startBE": "cd backend && nodemon server.js",
-    "startFE": "cd frontend && npm run dev"
+    "startBE": "cd backend && npm i && nodemon server.js",
+    "startFE": "cd frontend && npm i && npm run dev"
   },
   "repository": {
     "type": "git",
