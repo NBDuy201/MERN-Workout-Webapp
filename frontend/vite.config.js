@@ -16,6 +16,7 @@ export default defineConfig(({ mode }) => {
             : env.VITE_APP_API_PRODUCTION_DOMAIN,
           changeOrigin: true,
           secure: false,
+          rewrite: (path) => path.replace(/^\/api/, ""),
         },
       },
     },
