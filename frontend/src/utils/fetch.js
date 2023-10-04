@@ -2,6 +2,7 @@ import axios from "axios";
 import { API_URL } from "~/api/config";
 
 axios.defaults.baseURL = API_URL;
+console.log("🚀 ~ file: fetch.js:5 ~ API_URL:", API_URL);
 
 export const handlePost = async (api, data) => {
   try {

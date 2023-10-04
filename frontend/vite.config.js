@@ -12,16 +12,16 @@ export default defineConfig(({ mode }) => {
       cors: {
         origin: "*",
       },
-      proxy: {
-        "/api": {
-          target: isDev
-            ? `http://localhost:${env.VITE_APP_BACKEND_PORT}`
-            : env.VITE_APP_API_PRODUCTION_DOMAIN,
-          changeOrigin: true,
-          secure: false,
-          rewrite: (path) => path.replace(/^\/api/, ""),
-        },
-      },
+      // proxy: {
+      //   "/api": {
+      //     target: isDev
+      //       ? `http://localhost:${env.VITE_APP_BACKEND_PORT}`
+      //       : env.VITE_APP_API_PRODUCTION_DOMAIN,
+      //     changeOrigin: true,
+      //     secure: false,
+      //     rewrite: (path) => path.replace(/^\/api/, ""),
+      //   },
+      // },
     },
     plugins: [
       react({
