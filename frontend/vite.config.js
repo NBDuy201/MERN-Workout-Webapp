@@ -5,13 +5,13 @@ import react from "@vitejs/plugin-react";
 export default defineConfig(({ mode }) => {
   // eslint-disable-next-line no-undef
   const env = loadEnv(mode, process.cwd(), "");
-  const isDev = mode === "development";
+  // const isDev = mode === "development";
   return {
     server: {
       port: env.VITE_APP_FRONTEND_PORT,
-      cors: {
-        origin: "*",
-      },
+      // cors: {
+      //   origin: "*",
+      // },
       // proxy: {
       //   "/api": {
       //     target: isDev
