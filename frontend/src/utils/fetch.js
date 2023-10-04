@@ -1,4 +1,7 @@
 import axios from "axios";
+import { API_URL } from "~/api/config";
+
+axios.defaults.baseURL = API_URL;
 
 export const handlePost = async (api, data) => {
   try {
