@@ -9,6 +9,9 @@ export default defineConfig(({ mode }) => {
   return {
     server: {
       port: env.VITE_APP_FRONTEND_PORT,
+      cors: {
+        origin: "*",
+      },
       proxy: {
         "/api": {
           target: isDev

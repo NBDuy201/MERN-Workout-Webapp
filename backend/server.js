@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: [
-      `http://localhost:${process.env.VITE_APP_FRONTEND_PORT}`,
+      `http://127.0.0.1:${process.env.VITE_APP_FRONTEND_PORT}`,
       `${process.env.VITE_APP_PRODUCTION_DOMAIN}`,
     ],
   })
